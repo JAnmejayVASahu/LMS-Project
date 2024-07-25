@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { addAnswer, addQuestion, editCourse, getAllCourses, getCourseByUser, getSingleCourse, uploadCourse } from "../controller/course.controller";
+import { addAnswer, addQuestion, addReview, editCourse, getAllCourses, getCourseByUser, getSingleCourse, uploadCourse } from "../controller/course.controller";
 import { authorizeRoles, isAuthenticated } from "../middleware/auth";
 
 const courseRouter: Router = express.Router();
@@ -44,6 +44,12 @@ courseRouter.put(
   "/add-answer",
   isAuthenticated,
   addAnswer
+);
+
+courseRouter.put(
+  "/add-review/:id",
+  isAuthenticated,
+  addReview
 );
 
 export default courseRouter;
