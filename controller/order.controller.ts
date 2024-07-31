@@ -63,11 +63,14 @@ export const createOrder = CatchAsyncError(async (req: Request, res: Response, n
         message: `You have a new order from ${course?.name}`,
       });
 
-      if(course.purchased){
+      // Update the purchased field
+      if (course.purchased != null) {
         course.purchased += 1;
       }
 
-      await course.save();
+    await course.save();
+
+      // await course.save();
       newOrder(data, res, next);
 
     } catch (error: any) {
