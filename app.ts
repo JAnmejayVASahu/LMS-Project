@@ -7,6 +7,7 @@ import userRouter from "./roots/user.roots";
 export const app = express();
 import cors from "cors";
 import courseRouter from "./roots/course.root";
+import orderRouter from "./roots/order.root";
 
 // body parser
 app.use(express.json({ limit: "50mb" }));
@@ -25,6 +26,8 @@ app.use(
 app.use("/api/v1", userRouter);
 
 app.use("/api/v1", courseRouter);
+
+app.use("/api/v1", orderRouter);
 
 // testing api
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {
