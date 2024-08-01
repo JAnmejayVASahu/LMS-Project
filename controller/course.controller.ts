@@ -9,6 +9,7 @@ import mongoose from "mongoose";
 import path from "path";
 import * as ejs from "ejs";
 import sendEmail from "../utils/sendMail";
+import NotificationModel from "../models/notificationModel";
 
 // upload course
 export const uploadCourse = CatchAsyncError(
@@ -199,6 +200,12 @@ export const addQuestion = CatchAsyncError(
       // add this question to our course content
       courseContent.questions.push(newQuestion);
 
+      await NotificationModel.create({
+        user: req.user?._id,
+        title: "New Question Received",
+        message: `You have a new question from ${courseContent?.title}`,
+      });
+
       // save the updateed course
       await course?.save();
 
@@ -212,7 +219,7 @@ export const addQuestion = CatchAsyncError(
   }
 );
 
-// 
+// Add Answer
 interface IAddAnswerData {
   answer: string;
   courseId: string;
@@ -257,6 +264,11 @@ export const addAnswer = CatchAsyncError(
 
       if (req.user?._id === question.user._id) {
         // crate a notification
+        await NotificationModel.create({
+          user: req.user?._id,
+          title: "New question replay received",
+          message: `You have a new question's reply in ${courseContent?.title}`,
+        });
       } else {
         const data = {
           name: question.user.name,
