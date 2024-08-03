@@ -12,6 +12,7 @@ import {
   updateProfilePicture,
   getAllUsers,
   updateUserRole,
+  deleteUser,
 } from "../controller/user.controller.ts";
 import { authorizeRoles, isAuthenticated } from "../middleware/auth.ts";
 const userRouter = express.Router();
@@ -43,6 +44,13 @@ userRouter.put(
   isAuthenticated,
   authorizeRoles("admin"),
   updateUserRole
+);
+
+userRouter.delete(
+  "/delete-user/:id",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  deleteUser
 );
 
 export default userRouter;
