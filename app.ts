@@ -9,6 +9,7 @@ import cors from "cors";
 import courseRouter from "./roots/course.root";
 import orderRouter from "./roots/order.root";
 import notificationRoutr from "./roots/notification.roots";
+import analyticsRouter from "./roots/analitic.roots";
 
 // body parser
 app.use(express.json({ limit: "50mb" }));
@@ -24,7 +25,14 @@ app.use(
 );
 
 // routes
-app.use("/api/v1", userRouter, courseRouter, orderRouter, notificationRoutr);
+app.use(
+  "/api/v1",
+  userRouter,
+  courseRouter,
+  orderRouter,
+  notificationRoutr,
+  analyticsRouter
+);
 
 // testing api
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {
