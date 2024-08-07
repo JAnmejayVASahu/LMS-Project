@@ -10,6 +10,7 @@ import courseRouter from "./roots/course.root";
 import orderRouter from "./roots/order.root";
 import notificationRoutr from "./roots/notification.roots";
 import analyticsRouter from "./roots/analitic.roots";
+import layoutRouter from "./roots/layout.root";
 
 // body parser
 app.use(express.json({ limit: "50mb" }));
@@ -31,7 +32,8 @@ app.use(
   courseRouter,
   orderRouter,
   notificationRoutr,
-  analyticsRouter
+  analyticsRouter,
+  layoutRouter
 );
 
 // testing api
