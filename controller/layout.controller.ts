@@ -46,7 +46,17 @@ export const creatLayout = CatchAsyncError(
 
       if (type === "Categories") {
         const { categories } = req.body;
-        await LayoutModel.create(categories);
+        const categorieIteam = await Promise.all(
+          categories.map(async (item: any) => {
+            return {
+              title: item.title,
+            };
+          })
+        );
+        await LayoutModel.create({
+          type: "Categories",
+          categories: categorieIteam,
+        });
       }
 
       res.status(201).json({
@@ -68,72 +78,63 @@ export const editLayout = CatchAsyncError(
         const bannerData: any = await LayoutModel.findOne({ type: "Banner" });
         const { image, title, subTitle } = req.body;
         if (bannerData) {
-          await cloudinary.v2.uploader.destroy(bannerData?.image.public_id);
-
-          const myCloud = await cloudinary.v2.uploader.upload(image, {
-            folder: "layout",
-          });
-
-          const banner = {
-            type: "Banner",
-            image: {
-              public_id: myCloud.public_id,
-              url: myCloud.secure_url,
-            },
-            title,
-            subTitle,
-          };
-
-          await LayoutModel.findByIdAndUpdate(bannerData._id, { banner });
+          await cloudinary.v2.uploader.destroy(bannerData.image.public_id);
         }
 
-        if (type === "FAQ") {
-          const { faq } = req.body;
-          const faqIteam = await LayoutModel.findOne({ type: "FAQ" });
-          const FaqItem = await Promise.all(
-            faq.map(async (item: any) => {
-              return {
-                question: item.question,
-                answer: item.answer,
-              };
-            })
-          );
-          await LayoutModel.findByIdAndUpdate(faqIteam?._id, {
-            type: "FAQ",
-            faq: FaqItem,
-          });
-        }
+        const myCloud = await cloudinary.v2.uploader.upload(image, {
+          folder: "layout",
+        });
 
-        if (type === "Categories") {
-          const { categories } = req.body;
-          const categorieIteam = await LayoutModel.findOne({
-            type: "Categories",
-          });
+        const banner = {
+          type: "Banner",
+          image: {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+          },
+          title,
+          subTitle,
+        };
 
-          if (type === "Categories") {
-            const { categories } = req.body;
-            const catagorieData = await LayoutModel.findOne({
-              type: "Categories",
-            });
-            const catagoryIteams = await Promise.all(
-              categories.map(async (item: any) => {
-                return {
-                  title: item.title,
-                };
-              })
-            );
-            await LayoutModel.findByIdAndUpdate({
-              type: "Categories",
-              categories: catagoryIteams,
-            });
-          }
-
-          res.status(201).json({
-            success: true,
-            message: "Layout updated successfully",
-          });
-        }
+        await LayoutModel.findByIdAndUpdate(bannerData._id, { banner });
       }
+
+      if (type === "FAQ") {
+        const { faq } = req.body;
+        const faqIteam = await LayoutModel.findOne({ type: "FAQ" });
+        const FaqItems = await Promise.all(
+          faq.map(async (item: any) => {
+            return {
+              question: item.question,
+              answer: item.answer,
+            };
+          })
+        );
+        await LayoutModel.findByIdAndUpdate(faqIteam?._id, {
+          type: "FAQ",
+          faq: FaqItems,
+        });
+      }
+
+      if (type === "Categories") {
+        const { categories } = req.body;
+        const categorieData = await LayoutModel.findOne({ type: "Categories" });
+        const categorieIteam = await Promise.all(
+          categories.map(async (item: any) => {
+            return {
+              title: item.title,
+            };
+          })
+        );
+        await LayoutModel.findByIdAndUpdate(categorieData?._id, {
+          type: "Categories",
+          categories: categorieIteam,
+        });
+      }
+
+      res.status(201).json({
+        success: true,
+        message: "Layout updated successfully",
+      });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
