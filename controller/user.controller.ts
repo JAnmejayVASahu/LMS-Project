@@ -318,7 +318,7 @@ export const updatePassword = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { oldPassword, newPassword } = req.body as IUpdatePassword;
-      if (!oldPassword || newPassword) {
+      if (!oldPassword || !newPassword) {
         return next(new ErrorHandler("Please enter old and new password", 400));
       }
 
