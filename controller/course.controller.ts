@@ -456,11 +456,11 @@ export const generateVideoUrl = CatchAsyncError(
     try {
       const { videoUId } = req.body;
       const response = await axios.post(
-        `https://www.vdocipher.com//api/videos/$(videoId)/otp`,
+        `https://www.vdocipher.com/api/videos/${videoUId}/otp`,  // Fixed URL
         { ttl: 300 },
         {
           headers: {
-            Accept: "Application/json",
+            Accept: "application/json",
             "Content-Type": "application/json",
             Authorization: `Apisecret ${process.env.VDOCIPHER_API_SECRET}`,
           },
@@ -472,3 +472,4 @@ export const generateVideoUrl = CatchAsyncError(
     }
   }
 );
+
