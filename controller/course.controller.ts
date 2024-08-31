@@ -11,7 +11,7 @@ import * as ejs from "ejs";
 import sendEmail from "../utils/sendMail";
 import NotificationModel from "../models/notificationModel";
 import { getAllUsersService } from "../services/user.servic";
-import axios from 'axios';
+import axios from "axios";
 
 // upload course
 export const uploadCourse = CatchAsyncError(
@@ -454,9 +454,9 @@ export const deleteCourse = CatchAsyncError(
 export const generateVideoUrl = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { videoUId } = req.body;
+      const { videoId } = req.body;
       const response = await axios.post(
-        `https://www.vdocipher.com/api/videos/${videoUId}/otp`,  // Fixed URL
+        `https://www.vdocipher.com/api/videos/${videoId}/otp`, // Fixed URL
         { ttl: 300 },
         {
           headers: {
@@ -472,4 +472,3 @@ export const generateVideoUrl = CatchAsyncError(
     }
   }
 );
-
