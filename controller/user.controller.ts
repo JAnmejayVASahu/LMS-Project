@@ -231,10 +231,7 @@ export const updateAccessToken = CatchAsyncError(
       res.cookie("access_token", refreshToken, refreshTokenOptions);
 
       await redis.set(user._id, JSON.stringify(user), "EX", 604800);
-      res.status(200).json({
-        success: "success",
-        accessToken,
-      });
+      next();
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
