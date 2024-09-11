@@ -65,4 +65,11 @@ userRouter.delete(
   deleteUser
 );
 
+userRouter.put(
+  "/update-user",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  updateUserRole
+);
+
 export default userRouter;
