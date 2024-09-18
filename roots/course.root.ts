@@ -7,6 +7,7 @@ import {
   deleteCourse,
   editCourse,
   generateVideoUrl,
+  getAdminAllCourse,
   getAllCourses,
   getCourseByUser,
   getSingleCourse,
@@ -17,6 +18,12 @@ import { updateAccessToken } from "../controller/user.controller";
 
 const courseRouter: Router = express.Router();
 
+courseRouter.get(
+  "/get-admin-Course",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  getAdminAllCourse
+);
 courseRouter.post(
   "/create-course",
   updateAccessToken,
